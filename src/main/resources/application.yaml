@@ -1,0 +1,12 @@
+spring:
+  data:
+    cassandra:
+      contact-points: localhost
+      port: 9042
+      local-datacenter: local
+      keyspace-name: marvel
+      request:
+        timeout: 15s
+      connection:
+        init-query-timeout: 5000ms
+

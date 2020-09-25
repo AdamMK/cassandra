@@ -1,0 +1,87 @@
+version: "3.7"
+
+services:
+  cassandra1:
+    image: cassandra:4.0
+    container_name: cassandra1
+    hostname: cassandra1
+    ports:
+      - 7000
+      - 7001
+      - 7199
+      - "9042:9042"
+      - 9142
+    environment:
+      CASSANDRA_SEEDS: cassandra1
+      CASSANDRA_CLUSTER_NAME: ACluster
+      CASSANDRA_DC: local
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+    networks:
+      - cassandra
+    ulimits:
+      memlock: -1
+      nproc: 32768
+      nofile: 100000
+
+  cassandra2:
+    image: cassandra:4.0
+    container_name: cassandra2
+    hostname: cassandra2
+    environment:
+      CASSANDRA_SEEDS: cassandra1
+      CASSANDRA_CLUSTER_NAME: ACluster
+      CASSANDRA_DC: local
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+    expose:
+      # Intra-node communication
+      - 7000
+      # TLS intra-node communication
+      - 7001
+      # JMX
+      - 7199
+      # CQL
+      - 9042
+      # Thrift service
+      - 9160
+    networks:
+      - cassandra
+    ulimits:
+      memlock: -1
+      nproc: 32768
+      nofile: 100000
+    depends_on:
+      - cassandra1
+
+  cassandra3:
+    image: cassandra:4.0
+    container_name: cassandra3
+    hostname: cassandra3
+    environment:
+      CASSANDRA_SEEDS: cassandra1
+      CASSANDRA_CLUSTER_NAME: ACluster
+      CASSANDRA_DC: local
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+    expose:
+      # Intra-node communication
+      - 7000
+      # TLS intra-node communication
+      - 7001
+      # JMX
+      - 7199
+      # CQL
+      - 9042
+      # Thrift service
+      - 9160
+    networks:
+      - cassandra
+    ulimits:
+      memlock: -1
+      nproc: 32768
+      nofile: 100000
+    depends_on:
+      - cassandra1
+
+networks:
+  cassandra:
+    driver: bridge
+
