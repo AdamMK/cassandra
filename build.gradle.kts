@@ -18,11 +18,21 @@ repositories {
 }
 
 dependencies {
+
+    //Spring
     implementation("org.springframework.boot:spring-boot-starter-data-cassandra")
     implementation("org.springframework.boot:spring-boot-starter-web")
+
+    //Jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    //Kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    //Logging
+    implementation("io.github.microutils:kotlin-logging:1.7.8")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
