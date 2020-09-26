@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   spring-boot-cassandra-app:
-    image: spring-boot-cassandra:0.0.1-SNAPSHOT
+    image: springcassandra:0.0.1
     container_name: cassandra-app
     ports:
       - "8080:8080"

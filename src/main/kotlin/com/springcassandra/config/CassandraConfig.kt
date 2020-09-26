@@ -33,7 +33,7 @@ class CassandraConfig : AbstractCassandraConfiguration() {
         listOf(
             CreateKeyspaceSpecification.createKeyspace(keyspace)
                 .ifNotExists()
-                .withSimpleReplication(1)
+                .withSimpleReplication(3)
         )
 
     override fun getKeyspaceDrops(): List<DropKeyspaceSpecification> {
