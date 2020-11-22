@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.ResultSet
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal
+import com.datastax.oss.driver.api.querybuilder.relation.Relation
 import org.springframework.stereotype.Repository
 
 
@@ -26,7 +27,7 @@ class MarvelRepository(
         return cqlSession.execute(query)
     }
 
-    //READ
+    //READ ALL
     fun getAllHeroes(): List<Hero> {
         val query = QueryBuilder.selectFrom("heroes")
             .all()
@@ -42,6 +43,25 @@ class MarvelRepository(
                     it.getInt("year_created")
                 )
             }.all()
+    }
+
+    //READ ONE
+    fun getHeroById(heroId:Int): Hero? {
+        val query = QueryBuilder.selectFrom("heroes")
+            .all()
+            .where(Relation.column("id").isEqualTo(literal(heroId)))
+            .build()
+
+        return cqlSession.execute(query)
+            .map {
+                Hero(
+                    it.getInt("id"),
+                    it.getString("nickname") ?: "no nickname",
+                    it.getString("gender") ?: "no gender",
+                    it.getString("race") ?: "no race",
+                    it.getInt("year_created")
+                )
+            }.one()
     }
 
 }

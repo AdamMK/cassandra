@@ -3,6 +3,7 @@ package com.springcassandra
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -30,6 +31,19 @@ class MarvelController(
         logger.info { "Fetching details of all Heroes" }
 
         return ResponseEntity.ok(marvelService.showAllHeroes())
+    }
+
+    @GetMapping("/getHero/{id}")
+    fun showOneHero(@PathVariable("id") heroId: Int) : ResponseEntity<Hero> {
+        val hero = marvelService.showOneHero(heroId)
+
+        logger.info { "Fetching detail of hero id $heroId" }
+
+        return if (hero != null) {
+            ResponseEntity.ok(hero)
+        } else {
+            ResponseEntity.notFound().build()
+        }
     }
 
 

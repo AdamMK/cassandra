@@ -43,7 +43,7 @@ jib {
         ports = listOf("8080")
         mainClass = main_class
 
-        // good defauls intended for Java 8 (>= 8u191) containers
+        // good defaults intended for Java 8 (>= 8u191) containers
         jvmFlags = listOf(
             "-Dspring.profiles.active=docker"
         )

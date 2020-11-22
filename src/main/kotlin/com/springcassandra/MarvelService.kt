@@ -10,4 +10,6 @@ class MarvelService(
     fun saveHero(hero: Hero) = marvelRepository.saveHero(hero)
 
     fun showAllHeroes() = marvelRepository.getAllHeroes()
+
+    fun showOneHero(heroId: Int): Hero? = marvelRepository.getHeroById(heroId)
 }
