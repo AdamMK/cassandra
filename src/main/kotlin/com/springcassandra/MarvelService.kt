@@ -11,5 +11,13 @@ class MarvelService(
 
     fun showAllHeroes() = marvelRepository.getAllHeroes()
 
-    fun showOneHero(heroId: Int): Hero? = marvelRepository.getHeroById(heroId)
+    fun findHeroById(heroId: Int): Hero? = marvelRepository.getHeroById(heroId)
+
+    fun deleteHeroById(heroId: Int): Boolean {
+        val hero = findHeroById(heroId)
+        return if (hero == null)
+            false
+        else
+            marvelRepository.deleteHero(heroId).toList().isEmpty()
+    }
 }

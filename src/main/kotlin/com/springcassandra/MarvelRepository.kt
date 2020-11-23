@@ -64,4 +64,12 @@ class MarvelRepository(
             }.one()
     }
 
+    //DELETE
+    fun deleteHero(heroId: Int): ResultSet {
+        val query = QueryBuilder.deleteFrom("heroes")
+            .whereColumn("id").isEqualTo(literal(heroId))
+            .build()
+
+        return cqlSession.execute(query)
+    }
 }

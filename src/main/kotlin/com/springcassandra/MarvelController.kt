@@ -35,7 +35,7 @@ class MarvelController(
 
     @GetMapping("/getHero/{id}")
     fun showOneHero(@PathVariable("id") heroId: Int) : ResponseEntity<Hero> {
-        val hero = marvelService.showOneHero(heroId)
+        val hero = marvelService.findHeroById(heroId)
 
         logger.info { "Fetching detail of hero id $heroId" }
 
@@ -44,6 +44,13 @@ class MarvelController(
         } else {
             ResponseEntity.notFound().build()
         }
+    }
+
+    @PostMapping("/deleteHero/{id}")
+    fun deleteHero(@PathVariable("id") heroId: Int) : ResponseEntity<Boolean> {
+
+        logger.info { "Request to delete hero record Id $heroId" }
+        return ResponseEntity.ok(marvelService.deleteHeroById(heroId))
     }
 
 

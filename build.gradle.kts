@@ -48,6 +48,9 @@ jib {
             "-Dspring.profiles.active=docker"
         )
     }
+//    from {
+//        image =
+//    }
 }
 
 tasks.withType<Test> {
