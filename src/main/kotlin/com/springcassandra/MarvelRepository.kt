@@ -6,6 +6,7 @@ import com.datastax.oss.driver.api.querybuilder.QueryBuilder
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal
 import com.datastax.oss.driver.api.querybuilder.relation.Relation
 import org.springframework.stereotype.Repository
+import kotlin.random.Random
 
 
 @Repository

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import kotlin.random.Random
 
 private val logger = KotlinLogging.logger {}
 
@@ -16,13 +17,20 @@ class MarvelController(
 ) {
 
     @PostMapping("/saveHero")
-    fun saveHero(@RequestBody hero: Hero): ResponseEntity<Hero> {
+    fun saveHero(@RequestBody hero: Hero): ResponseEntity<String> {
 
-        //Need to create self generating id
-        marvelService.saveHero(hero)
+        val randomHero = Hero(
+            id = hero.id ?: Random.nextInt(0, 5000),
+            nickname = hero.nickname ?: "unknown",
+            gender = hero.gender ?: "unknown",
+            race = hero.race ?: "unknown",
+            yearCr = hero.yearCr ?: 0
+        )
+
+        marvelService.saveHero(randomHero)
         logger.info { "Saving $hero" }
 
-        return ResponseEntity.ok(hero)
+        return ResponseEntity.ok("Hero Id ${randomHero.id} has been saved")
     }
 
     @GetMapping("/allHeroes")
