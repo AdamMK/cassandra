@@ -19,7 +19,7 @@ class MarvelController(
     @PostMapping("/saveHero")
     fun saveHero(@RequestBody hero: Hero): ResponseEntity<String> {
 
-        val randomHero =    Hero(
+        val randomHero = Hero(
             id = hero.id ?: Random.nextInt(0, 5000),
             nickname = hero.nickname ?: "unknown",
             gender = hero.gender ?: "unknown",
