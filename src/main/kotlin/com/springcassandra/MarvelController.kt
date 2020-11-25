@@ -1,6 +1,9 @@
 package com.springcassandra
 
+import com.springcassandra.utils.Failure
+import com.springcassandra.utils.Success
 import mu.KotlinLogging
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,6 +22,7 @@ class MarvelController(
     @PostMapping("/saveHero")
     fun saveHero(@RequestBody hero: Hero): ResponseEntity<String> {
 
+
         val randomHero = Hero(
             id = hero.id ?: Random.nextInt(0, 5000),
             nickname = hero.nickname ?: "unknown",
@@ -34,12 +38,14 @@ class MarvelController(
     }
 
     @GetMapping("/allHeroes")
-    fun showAllHeros() : ResponseEntity<List<Hero>> {
+    fun showAllHeros() : ResponseEntity<List<Hero>>{
+        logger.info{"Fetching all heroes"}
+        val response = marvelService.showAllHeroes()
+        return if (response.isNotEmpty())
+             ResponseEntity.ok(response)
+        else ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyList())
+        }
 
-        logger.info { "Fetching details of all Heroes" }
-
-        return ResponseEntity.ok(marvelService.showAllHeroes())
-    }
 
     @GetMapping("/getHero/{id}")
     fun showOneHero(@PathVariable("id") heroId: Int) : ResponseEntity<Hero> {
