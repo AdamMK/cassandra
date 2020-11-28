@@ -1,7 +1,5 @@
 package com.springcassandra
 
-import com.springcassandra.utils.Failure
-import com.springcassandra.utils.Success
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

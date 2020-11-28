@@ -33,6 +33,9 @@ dependencies {
     //Logging
     implementation("io.github.microutils:kotlin-logging:1.7.8")
 
+    //Testing
+    testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
