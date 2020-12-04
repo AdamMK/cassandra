@@ -1,8 +1,5 @@
 package com.springcassandra
 
-import com.springcassandra.utils.Failable
-import com.springcassandra.utils.Failure
-import com.springcassandra.utils.Success
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
@@ -14,7 +11,6 @@ class MarvelService(
 ) {
     //what if i try to override on the same id
     fun saveHero(hero: Hero) = marvelRepository.saveHero(hero)
-
 
     fun showAllHeroes() = marvelRepository.getAllHeroes()
 
