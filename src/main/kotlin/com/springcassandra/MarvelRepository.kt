@@ -5,6 +5,8 @@ import com.datastax.oss.driver.api.core.cql.ResultSet
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal
 import com.datastax.oss.driver.api.querybuilder.relation.Relation
+import com.springcassandra.utils.Failable
+import com.springcassandra.utils.Failure
 import org.springframework.stereotype.Repository
 import kotlin.random.Random
 
@@ -14,19 +16,20 @@ class MarvelRepository(
     val cqlSession: CqlSession
 ) {
     //CREATE
-    fun saveHero(hero: Hero): ResultSet {
+    fun saveHero(hero: Hero) =
+        runCatching {
 
-        val query = QueryBuilder.insertInto("heroes")
-            .value("id", literal(hero.id))
-            .value("nickname", literal(hero.nickname))
-            .value("gender", literal(hero.gender))
-            .value("race", literal(hero.race))
-            .value("year_created", literal(hero.yearCr))
-            .ifNotExists()
-            .build()
+            val query = QueryBuilder.insertInto("heroes")
+                .value("id", literal(hero.id))
+                .value("nickname", literal(hero.nickname))
+                .value("gender", literal(hero.gender))
+                .value("race", literal(hero.race))
+                .value("year_created", literal(hero.yearCr))
+                .ifNotExists()
+                .build()
+             cqlSession.execute(query)
+        }.isSuccess
 
-        return cqlSession.execute(query)
-    }
 
     //READ ALL
     fun getAllHeroes(): List<Hero> {
@@ -41,6 +44,7 @@ class MarvelRepository(
                     it.getString("nickname") ?: "no nickname",
                     it.getString("gender") ?: "no gender",
                     it.getString("race") ?: "no race",
+                    //by default if this is null it will return 0
                     it.getInt("year_created")
                 )
             }.all()

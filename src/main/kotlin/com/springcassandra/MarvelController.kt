@@ -22,6 +22,7 @@ class MarvelController(
 
 
         val randomHero = Hero(
+            //not idempotent - collisions?
             id = hero.id ?: Random.nextInt(0, 5000),
             nickname = hero.nickname ?: "unknown",
             gender = hero.gender ?: "unknown",
