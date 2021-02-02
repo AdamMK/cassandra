@@ -29,11 +29,14 @@ class MarvelController(
             race = hero.race ?: "unknown",
             yearCr = hero.yearCr ?: 0
         )
+        val heroNotInDb = randomHero.id?.let { marvelService.findHeroById(it) } == null
 
-        marvelService.saveHero(randomHero)
-        logger.info { "Saving $hero" }
-
-        return ResponseEntity.ok("Hero Id ${randomHero.id} has been saved")
+        return if (heroNotInDb) {
+            marvelService.saveHero(randomHero)
+            logger.info { "Saving $hero" }
+            ResponseEntity.ok("Hero Id ${randomHero.id} has been saved")
+        } else
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Hero with id ${randomHero.id} already exists")
     }
 
     @GetMapping("/allHeroes")
@@ -42,7 +45,7 @@ class MarvelController(
         val response = marvelService.showAllHeroes()
         return if (response.isNotEmpty())
              ResponseEntity.ok(response)
-        else ResponseEntity.status(HttpStatus.NOT_FOUND).body(emptyList())
+        else ResponseEntity.notFound().build()
         }
 
 
@@ -60,11 +63,16 @@ class MarvelController(
     }
 
     @PostMapping("/deleteHero/{id}")
-    fun deleteHero(@PathVariable("id") heroId: Int) : ResponseEntity<Boolean> {
+    fun deleteHero(@PathVariable("id") heroId: Int) : ResponseEntity<String> {
+
+        val hero = marvelService.deleteHeroById(heroId)
 
         logger.info { "Request to delete hero record Id $heroId" }
-        return ResponseEntity.ok(marvelService.deleteHeroById(heroId))
-    }
 
+        return if (hero)
+            ResponseEntity.status(HttpStatus.OK).body("Hero deleted")
+        else
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Hero Id not found")
+    }
 
 }

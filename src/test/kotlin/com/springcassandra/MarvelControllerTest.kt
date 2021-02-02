@@ -58,7 +58,6 @@ class MarvelControllerTests {
                 val result = underTest.showAllHeros()
 
                 assertEquals(HttpStatus.NOT_FOUND, result.statusCode)
-                assertEquals(emptyResponse, result.body)
             }
         }
 

@@ -5,10 +5,7 @@ import com.datastax.oss.driver.api.core.cql.ResultSet
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal
 import com.datastax.oss.driver.api.querybuilder.relation.Relation
-import com.springcassandra.utils.Failable
-import com.springcassandra.utils.Failure
 import org.springframework.stereotype.Repository
-import kotlin.random.Random
 
 
 @Repository
@@ -17,6 +14,7 @@ class MarvelRepository(
 ) {
     //CREATE
     fun saveHero(hero: Hero) =
+
         runCatching {
 
             val query = QueryBuilder.insertInto("heroes")

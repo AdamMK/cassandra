@@ -21,10 +21,15 @@ class CQLMigration(
         logger.info { "Found ${resources.size} migrations to run." }
 
         resources.flatMap {
-            it.inputStream.bufferedReader().readLines()
+            try {
+                it.inputStream.bufferedReader().readLines()
+            } finally {
+                it.inputStream.close()
+            }
         }.forEach { migration ->
             logger.info { migration }
             cqlSession.execute(migration)
         }
+
     }
 }

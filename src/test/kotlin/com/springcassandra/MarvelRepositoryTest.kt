@@ -27,10 +27,10 @@ class MarvelRepositoryTests{
         inner class `When valid saveHero query is made`{
 
 
-            @Test
-            fun `then hero is being saved`{
-
-            }
+//            @Test
+//            fun `then hero is being saved`{
+//
+//            }
         }
     }
 
