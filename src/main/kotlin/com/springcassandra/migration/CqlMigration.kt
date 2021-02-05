@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.core.CqlSession
 import mu.KotlinLogging
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.ApplicationListener
+import org.springframework.core.io.Resource
 import org.springframework.core.io.support.ResourcePatternResolver
 import org.springframework.stereotype.Component
 
@@ -17,19 +18,22 @@ class CQLMigration(
 
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
         val resources = resourceLoader.getResources("classpath:/cql/*.cql")
-
         logger.info { "Found ${resources.size} migrations to run." }
+        try {
+            processResources(resources)
+        } catch (e: Exception) {
+            logger.error { "Cannot load migrations - $e" }
+        }
+    }
 
-        resources.flatMap {
-            try {
-                it.inputStream.bufferedReader().readLines()
-            } finally {
-                it.inputStream.close()
+    fun processResources(res: Array<Resource>) {
+         res.flatMap { resource ->
+            resource.inputStream.use {
+                it.bufferedReader().readLines()
             }
-        }.forEach { migration ->
+         }.forEach { migration ->
             logger.info { migration }
             cqlSession.execute(migration)
-        }
-
+         }
     }
 }

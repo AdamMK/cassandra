@@ -45,7 +45,8 @@ class MarvelController(
         val response = marvelService.showAllHeroes()
         return if (response.isNotEmpty())
              ResponseEntity.ok(response)
-        else ResponseEntity.notFound().build()
+        else
+            ResponseEntity.notFound().build()
         }
 
 
@@ -55,11 +56,11 @@ class MarvelController(
 
         logger.info { "Fetching detail of hero id $heroId" }
 
-        return if (hero != null) {
+        return if (hero != null)
             ResponseEntity.ok(hero)
-        } else {
+        else
             ResponseEntity.notFound().build()
-        }
+
     }
 
     @PostMapping("/deleteHero/{id}")
